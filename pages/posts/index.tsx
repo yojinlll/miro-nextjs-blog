@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { NextPage } from "next";
+import { NextPage, GetStaticProps } from "next";
+import Link from "next/link";
 import { usePosts } from "hooks/usePosts";
 import { getPosts } from "lib/posts";
 
@@ -8,7 +9,6 @@ type Props = {
 }
 
 const PostsIndex: NextPage<Props> = (props) => {
-  console.log(props)
   // const {posts, isLoading, isEmpty} = usePosts()
 
   return (
@@ -22,8 +22,10 @@ const PostsIndex: NextPage<Props> = (props) => {
             props.posts.map(i => {
               return (
                 <div key={i.id}>
-                  {i.title}
-                  <div>{i.content}</div>
+                  {/* <Link href={`/posts/${i.id}`}> */}
+                  <Link href="/posts/[id]" as={`/posts/${i.id}`}>
+                    <a>{i.title}</a>
+                  </Link>
                 </div>
               )
             })
@@ -36,7 +38,7 @@ const PostsIndex: NextPage<Props> = (props) => {
 
 export default PostsIndex
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const posts = await getPosts()
   return {
     props:{

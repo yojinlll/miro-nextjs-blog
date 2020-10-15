@@ -23,5 +23,6 @@ interface Post {
   id: string,
   date: string
   title: string
-  content: any
+  content: string,
+  htmlContent: string,
 }
