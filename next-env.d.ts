@@ -16,3 +16,12 @@ declare module '*.jpg' {
   const content: string;
   export default content;
 }
+
+/**------------- */
+
+interface Post {
+  id: string,
+  date: string
+  title: string
+  content: any
+}
