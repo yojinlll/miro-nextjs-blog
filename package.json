@@ -11,7 +11,8 @@
     "migration:run": "typeorm migration:run",
     "m:run": "typeorm migration:run",
     "migration:revert": "typeorm migration:revert",
-    "m:revert": "typeorm migration:revert"
+    "m:revert": "typeorm migration:revert",
+    "entity:create": "typeorm entity:create"
   },
   "dependencies": {
     "@babel/cli": "^7.12.1",
