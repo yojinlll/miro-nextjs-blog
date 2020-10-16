@@ -5,7 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+
+    "docker": "docker exec -it de6aa18355bf bash",
+
+    "typeorm:build": "babel -w ./src --out-dir dist --extensions .ts,.tsx",
+    "t:build": "babel -w ./src --out-dir dist --extensions .ts,.tsx",
+
+    "migration:run": "typeorm migration:run",
+    "m:run": "typeorm migration:run",
+
+    "migration:revert": "typeorm migration:revert",
+    "m:revert": "typeorm migration:revert"
   },
   "dependencies": {
     "@babel/cli": "^7.12.1",
