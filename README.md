@@ -2,44 +2,52 @@
 
 ## 启动数据库
 
-启动虚拟机，得到虚拟机id
+- 启动虚拟机，得到虚拟机id
 ```
 docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
 ```
 
-进入虚拟机
+- 进入虚拟机
 ```
 docker exec -it de6aa18355bf bash
 ```
 
-进入 databases
+- 进入 databases
 ```
 psql -U blog
 
 \l: list databases
-\c: connect to a database
-\dt: display tables
 ```
 
-创建 database
+- 创建 database
 ```
 CREATE DATABASE ${database name} ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
 ```
 
+- 操作 database
+```
+\dt: display tables
+\c ${databaseName}: connect to a ${databaseName}
+
+select * from ${relation name};
+```
+
 ## PostgreSQL
 
-创建表
+配置查看 `ormconfig.json`
+
+- 创建表
 ```
 typeorm migration:create -n TableName
 ```
 
-数据迁移
+- 数据迁移(迁进 & 迁出)
 ```
 typeorm migration:run
 typeorm migration:revert
 ```
 
-数据映射实体
+- 数据映射实体
 ```
 typeorm entity:create
 ```
