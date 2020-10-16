@@ -1,30 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Init
 
-## Getting Started
+## 启动数据库
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+启动虚拟机，得到虚拟机id
+```
+docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+进入虚拟机
+```
+docker exec -it de6aa18355bf bash
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+进入 databases
+```
+psql -U blog
 
-## Learn More
+\l: list databases
+\c: connect to a database
+\dt: display tables
+```
 
-To learn more about Next.js, take a look at the following resources:
+创建 database
+```
+CREATE DATABASE ${database name} ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## PostgreSQL
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+创建表
+```
+typeorm migration:create -n TableName
+```
 
-## Deploy on Vercel
+数据迁移
+```
+typeorm migration:run
+typeorm migration:revert
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+数据映射实体
+```
+typeorm entity:create
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 清空之前记录
+
+```
+docker ps
+docker kill 容器id
+docker rm 容器id
+
+rm -rf blog-data
+或
+docker container prune 
+docker volume rm blog-data
+```
+
+## 创建数据库
+
+```
+docker exec -it <id> bash
+psql -U blog
+docker run -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
+
+CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
+```

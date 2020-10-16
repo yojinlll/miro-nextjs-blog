@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CreatePost1602836814897 = void 0;
+exports.CreateUsers1602866298414 = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -17,12 +17,12 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _typeorm = require("typeorm");
 
-var CreatePost1602836814897 = /*#__PURE__*/function () {
-  function CreatePost1602836814897() {
-    (0, _classCallCheck2["default"])(this, CreatePost1602836814897);
+var CreateUsers1602866298414 = /*#__PURE__*/function () {
+  function CreateUsers1602866298414() {
+    (0, _classCallCheck2["default"])(this, CreateUsers1602866298414);
   }
 
-  (0, _createClass2["default"])(CreatePost1602836814897, [{
+  (0, _createClass2["default"])(CreateUsers1602866298414, [{
     key: "up",
     value: function () {
       var _up = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(queryRunner) {
@@ -30,28 +30,24 @@ var CreatePost1602836814897 = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return queryRunner.createTable(new _typeorm.Table({
-                  name: 'posts',
+                queryRunner.createTable(new _typeorm.Table({
+                  name: 'users',
                   columns: [{
                     name: 'id',
-                    type: 'int',
-                    isPrimary: true,
                     isGenerated: true,
-                    generationStrategy: 'increment'
+                    type: 'int',
+                    generationStrategy: 'increment',
+                    isPrimary: true
                   }, {
-                    name: 'title',
+                    name: 'username',
                     type: 'varchar'
                   }, {
-                    name: 'content',
-                    type: 'text'
+                    name: 'password_digest',
+                    type: 'varchar'
                   }]
                 }));
 
-              case 2:
-                return _context.abrupt("return", _context.sent);
-
-              case 3:
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -74,7 +70,7 @@ var CreatePost1602836814897 = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return queryRunner.dropTable('posts');
+                return queryRunner.dropTable('users');
 
               case 2:
                 return _context2.abrupt("return", _context2.sent);
@@ -94,7 +90,7 @@ var CreatePost1602836814897 = /*#__PURE__*/function () {
       return down;
     }()
   }]);
-  return CreatePost1602836814897;
+  return CreateUsers1602866298414;
 }();
 
-exports.CreatePost1602836814897 = CreatePost1602836814897;
+exports.CreateUsers1602866298414 = CreateUsers1602866298414;
