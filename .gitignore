@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.vscode
+/blog-data;C
 /.pnp
 .pnp.js
 
