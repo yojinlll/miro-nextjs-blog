@@ -4,6 +4,7 @@
 /node_modules
 /.vscode
 /blog-data;C
+/error
 /.pnp
 .pnp.js
 

@@ -1,5 +1,15 @@
 # Init
 
+## 启动项目
+
+```
+yarn dev
+
+// 该命令包含 next dev 和 yarn typeorm:build
+// 为了统一 ts 转换 js 的标准，移除 typeorm 自带的 ts-node 依赖，与 nextjs 一样， typeorm 的 ts 文件同样使用 babel 编译
+// yarn typeorm:build, babel 会监控文件的变化，将 src 下的 ts 文件 （typeorm 相关） 编译到 dist, 让 node 执行 dist 目录下的 js（typeorm 相关）
+```
+
 ## 启动数据库
 
 - 启动虚拟机，得到虚拟机id
@@ -11,6 +21,10 @@ docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES
 ```
 docker exec -it de6aa18355bf bash
 ```
+
+## PostgreSQL
+
+配置查看 `ormconfig.json`
 
 - 进入 databases
 ```
@@ -24,17 +38,21 @@ psql -U blog
 CREATE DATABASE ${database name} ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
 ```
 
+- 删除 database
+```
+drop database ${database name}
+```
+
 - 操作 database
 ```
 \dt: display tables
+\d ${table}: describe table
 \c ${databaseName}: connect to a ${databaseName}
 
 select * from ${relation name};
 ```
 
-## PostgreSQL
-
-配置查看 `ormconfig.json`
+## Typeorm
 
 - 创建表
 ```

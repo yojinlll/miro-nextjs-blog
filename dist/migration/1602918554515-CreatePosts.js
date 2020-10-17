@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RenameColumns1602917159319 = void 0;
+exports.CreatePosts1602918554515 = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -15,12 +15,14 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var RenameColumns1602917159319 = /*#__PURE__*/function () {
-  function RenameColumns1602917159319() {
-    (0, _classCallCheck2["default"])(this, RenameColumns1602917159319);
+var _typeorm = require("typeorm");
+
+var CreatePosts1602918554515 = /*#__PURE__*/function () {
+  function CreatePosts1602918554515() {
+    (0, _classCallCheck2["default"])(this, CreatePosts1602918554515);
   }
 
-  (0, _createClass2["default"])(RenameColumns1602917159319, [{
+  (0, _createClass2["default"])(CreatePosts1602918554515, [{
     key: "up",
     value: function () {
       var _up = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(queryRunner) {
@@ -29,21 +31,37 @@ var RenameColumns1602917159319 = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return queryRunner.renameColumn('users', 'password_digest', 'passwordDigest');
+                return queryRunner.createTable(new _typeorm.Table({
+                  name: 'posts',
+                  columns: [{
+                    name: 'id',
+                    isGenerated: true,
+                    type: 'int',
+                    generationStrategy: 'increment',
+                    isPrimary: true
+                  }, {
+                    name: 'title',
+                    type: 'varchar'
+                  }, {
+                    name: 'content',
+                    type: 'varchar'
+                  }, {
+                    name: 'authorId',
+                    type: 'int'
+                  }, {
+                    name: 'createdAt',
+                    type: 'time',
+                    isNullable: false,
+                    "default": 'now()'
+                  }, {
+                    name: 'updatedAt',
+                    type: 'time',
+                    isNullable: false,
+                    "default": 'now()'
+                  }]
+                }));
 
               case 2:
-                _context.next = 4;
-                return queryRunner.renameColumn('posts', 'author_id', 'authorId');
-
-              case 4:
-                _context.next = 6;
-                return queryRunner.renameColumn('comments', 'user_id', 'userId');
-
-              case 6:
-                _context.next = 8;
-                return queryRunner.renameColumn('comments', 'post_id', 'postId');
-
-              case 8:
               case "end":
                 return _context.stop();
             }
@@ -66,21 +84,9 @@ var RenameColumns1602917159319 = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return queryRunner.renameColumn('users', 'passwordDigest', 'password_digest');
+                return queryRunner.dropTable('posts');
 
               case 2:
-                _context2.next = 4;
-                return queryRunner.renameColumn('posts', 'authorId', 'author_id');
-
-              case 4:
-                _context2.next = 6;
-                return queryRunner.renameColumn('comments', 'userId', 'user_id');
-
-              case 6:
-                _context2.next = 8;
-                return queryRunner.renameColumn('comments', 'postId', 'post_id');
-
-              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -95,7 +101,7 @@ var RenameColumns1602917159319 = /*#__PURE__*/function () {
       return down;
     }()
   }]);
-  return RenameColumns1602917159319;
+  return CreatePosts1602918554515;
 }();
 
-exports.RenameColumns1602917159319 = RenameColumns1602917159319;
+exports.CreatePosts1602918554515 = CreatePosts1602918554515;

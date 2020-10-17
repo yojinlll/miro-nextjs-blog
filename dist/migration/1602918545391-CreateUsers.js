@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CreateComments1602867075364 = void 0;
+exports.CreateUsers1602918545391 = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -17,12 +17,12 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _typeorm = require("typeorm");
 
-var CreateComments1602867075364 = /*#__PURE__*/function () {
-  function CreateComments1602867075364() {
-    (0, _classCallCheck2["default"])(this, CreateComments1602867075364);
+var CreateUsers1602918545391 = /*#__PURE__*/function () {
+  function CreateUsers1602918545391() {
+    (0, _classCallCheck2["default"])(this, CreateUsers1602918545391);
   }
 
-  (0, _createClass2["default"])(CreateComments1602867075364, [{
+  (0, _createClass2["default"])(CreateUsers1602918545391, [{
     key: "up",
     value: function () {
       var _up = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(queryRunner) {
@@ -32,7 +32,7 @@ var CreateComments1602867075364 = /*#__PURE__*/function () {
               case 0:
                 _context.next = 2;
                 return queryRunner.createTable(new _typeorm.Table({
-                  name: 'comments',
+                  name: 'users',
                   columns: [{
                     name: 'id',
                     isGenerated: true,
@@ -40,14 +40,21 @@ var CreateComments1602867075364 = /*#__PURE__*/function () {
                     generationStrategy: 'increment',
                     isPrimary: true
                   }, {
-                    name: 'user_id',
-                    type: 'int'
+                    name: 'username',
+                    type: 'varchar'
                   }, {
-                    name: 'post_id',
-                    type: 'int'
+                    name: 'passwordDigest',
+                    type: 'varchar'
                   }, {
-                    name: 'content',
-                    type: 'text'
+                    name: 'createdAt',
+                    type: 'time',
+                    isNullable: false,
+                    "default": 'now()'
+                  }, {
+                    name: 'updatedAt',
+                    type: 'time',
+                    isNullable: false,
+                    "default": 'now()'
                   }]
                 }));
 
@@ -74,12 +81,9 @@ var CreateComments1602867075364 = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return queryRunner.dropTable('comments');
+                return queryRunner.dropTable('users');
 
               case 2:
-                return _context2.abrupt("return", _context2.sent);
-
-              case 3:
               case "end":
                 return _context2.stop();
             }
@@ -94,7 +98,7 @@ var CreateComments1602867075364 = /*#__PURE__*/function () {
       return down;
     }()
   }]);
-  return CreateComments1602867075364;
+  return CreateUsers1602918545391;
 }();
 
-exports.CreateComments1602867075364 = CreateComments1602867075364;
+exports.CreateUsers1602918545391 = CreateUsers1602918545391;
