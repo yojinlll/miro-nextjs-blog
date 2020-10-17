@@ -16,9 +16,9 @@ export class Post {
   @Column('int')
   authorId: string
 
-  @CreateDateColumn('time')
+  @CreateDateColumn()
   createdAt: Date
-  @CreateDateColumn('time')
+  @CreateDateColumn()
   updatedAt: Date
 
   @ManyToOne(type => User, user => user.posts)
