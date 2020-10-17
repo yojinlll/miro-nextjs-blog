@@ -50,12 +50,12 @@ var CreateComments1602918561545 = /*#__PURE__*/function () {
                     type: 'text'
                   }, {
                     name: 'createdAt',
-                    type: 'time',
+                    type: 'timestamp',
                     isNullable: false,
                     "default": 'now()'
                   }, {
                     name: 'updatedAt',
-                    type: 'time',
+                    type: 'timestamp',
                     isNullable: false,
                     "default": 'now()'
                   }]

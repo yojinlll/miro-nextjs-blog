@@ -9,8 +9,8 @@ export class CreateUsers1602918545391 implements MigrationInterface {
         { name: 'id', isGenerated: true, type: 'int', generationStrategy: 'increment', isPrimary: true },
         { name: 'username', type: 'varchar' },
         { name: 'passwordDigest', type: 'varchar' },
-        { name: 'createdAt', type: 'time', isNullable: false, default: 'now()' },
-        { name: 'updatedAt', type: 'time', isNullable: false, default: 'now()' }
+        { name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' },
+        { name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' }
       ]
     }))
   }

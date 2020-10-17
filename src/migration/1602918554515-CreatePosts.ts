@@ -10,8 +10,8 @@ export class CreatePosts1602918554515 implements MigrationInterface {
         { name: 'title', type: 'varchar'},
         { name: 'content', type: 'varchar'},
         { name: 'authorId', type: 'int'},
-        { name: 'createdAt', type: 'time', isNullable: false, default: 'now()' },
-        { name: 'updatedAt', type: 'time', isNullable: false, default: 'now()' }
+        { name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' },
+        { name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' }
       ]
     }))
   }

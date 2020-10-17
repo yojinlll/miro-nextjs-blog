@@ -10,8 +10,8 @@ export class CreateComments1602918561545 implements MigrationInterface {
         { name: 'userId', type: 'int'},
         { name: 'postId', type: 'int'},
         { name: 'content', type: 'text'},
-        { name: 'createdAt', type: 'time', isNullable: false, default: 'now()' },
-        { name: 'updatedAt', type: 'time', isNullable: false, default: 'now()' }
+        { name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' },
+        { name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' }
       ]
     }))
   }
