@@ -6,7 +6,7 @@
     "dev": "concurrently \"next dev\" \"yarn typeorm:build\"",
     "build": "next build",
     "start": "next start",
-    "docker": "docker exec -it 40bd1ddb1e3e bash",
+    "docker": "docker exec -it 8e31ce6943f7 bash",
     "typeorm:build": "babel -w ./src --out-dir dist --extensions .ts,.tsx",
     "m:create": "typeorm migration:create",
     "m:run": "typeorm migration:run",

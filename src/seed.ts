@@ -25,4 +25,5 @@ createConnection().then(async connection => {
   await manager.save(c1)
 
   connection.close()
+  console.log('Done!');
 }).catch(error => console.log(error));

@@ -8,6 +8,7 @@ yarn dev
 // 该命令包含 next dev 和 yarn typeorm:build
 // 为了统一 ts 转换 js 的标准，移除 typeorm 自带的 ts-node 依赖，与 nextjs 一样， typeorm 的 ts 文件同样使用 babel 编译
 // yarn typeorm:build, babel 会监控文件的变化，将 src 下的 ts 文件 （typeorm 相关） 编译到 dist, 让 node 执行 dist 目录下的 js（typeorm 相关）
+// 最后通过 node 执行 dist 目录下的文件
 ```
 
 ## 启动数据库
