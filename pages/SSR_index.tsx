@@ -1,3 +1,4 @@
+import { getDatabaseConnection } from 'lib/getDatabaseConnection';
 import { GetServerSideProps, NextPage } from 'next'
 // import Link from 'next/link'
 import { UAParser } from "ua-parser-js";
@@ -25,6 +26,10 @@ const SSRIndex: NextPage<Props> = (props) => {
 export default SSRIndex
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const connection = await getDatabaseConnection()
+  console.log('connection');
+  
+
   const ua = context.req.headers['user-agent']
   const result = new UAParser(ua).getResult()
   return {
