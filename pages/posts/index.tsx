@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { NextPage, GetStaticProps } from "next";
+import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Link from "next/link";
 import { usePosts } from "hooks/usePosts";
 import { getPosts } from "lib/posts";
+import { getDatabaseConnection } from "lib/getDatabaseConnection";
+import { Post } from "src/entity/Post";
 
 type Props = {
   posts: Post[]
@@ -13,7 +15,7 @@ const PostsIndex: NextPage<Props> = (props) => {
 
   return (
     <div>
-      <h1>posts index</h1>
+      <h1>posts 列表</h1>
       {
         // isLoading ? 'loading' :
         <div>
@@ -38,11 +40,24 @@ const PostsIndex: NextPage<Props> = (props) => {
 
 export default PostsIndex
 
-export const getStaticProps: GetStaticProps = async () => {
-  const posts = await getPosts()
+// 数据库获取数据
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const connection = await getDatabaseConnection()
+  const posts = await connection.manager.find(Post)
+  
   return {
-    props:{
+    props: {
       posts: JSON.parse(JSON.stringify(posts))
     }
   }
 }
+
+// 本地获取数据
+// export const getStaticProps: GetStaticProps = async () => {
+//   const posts = await getPosts()
+//   return {
+//     props:{
+//       posts: JSON.parse(JSON.stringify(posts))
+//     }
+//   }
+// }

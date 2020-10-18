@@ -5,6 +5,7 @@ import marked from 'marked'
 
 const markdownDir = path.join(process.cwd(), "markdown")
 
+// 本地获取数据
 export const getPosts = async () => {
   const fileNames = await fsPromise.readdir(markdownDir)
   console.log('node-data', fileNames);
