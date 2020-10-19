@@ -19,7 +19,14 @@ const SignUp: NextPage = () => {
   const onSubmit = useCallback((e) => {
     e.preventDefault()
     axios.post('/api/v1/users', formData)
-      .then(res => { })
+      .then(res => { 
+        console.log('res', res.data);
+        setErrors({
+          username: [],
+          password: [],
+          passwordConfirmation: [],
+        })
+      })
       .catch(err => {
         const error = err as AxiosError
         if (error.response) {
@@ -44,7 +51,7 @@ const SignUp: NextPage = () => {
               onChange={e => setFormData({ ...formData, username: e.target.value })}
             />
           </label>
-          <div>{ errors.username?.length > 0 && errors.username[0] }</div>
+          <span style={{fontSize: '14px', color: '#ee4949'}}>{ errors.username?.length > 0 && errors.username[0] }</span>
         </div>
         <div>
           <label>
@@ -53,7 +60,7 @@ const SignUp: NextPage = () => {
               onChange={e => setFormData({ ...formData, password: e.target.value })}
             />
           </label>
-          <div>{ errors.password?.length > 0 && errors.password[0] }</div>
+          <span style={{fontSize: '14px', color: '#ee4949'}}>{ errors.password?.length > 0 && errors.password[0] }</span>
         </div>
         <div>
           <label>
@@ -62,7 +69,7 @@ const SignUp: NextPage = () => {
               onChange={e => setFormData({ ...formData, passwordConfirmation: e.target.value })}
             />
           </label>
-          <div>{ errors.passwordConfirmation?.length > 0 && errors.passwordConfirmation[0] }</div>
+          <span style={{fontSize: '14px', color: '#ee4949'}}>{ errors.passwordConfirmation?.length > 0 && errors.passwordConfirmation[0] }</span>
         </div>
         <div>
           <button type="submit">注册</button>
