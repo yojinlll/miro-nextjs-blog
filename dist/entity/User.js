@@ -107,14 +107,14 @@ var User = (_dec = (0, _typeorm.Entity)('users'), _dec2 = (0, _typeorm.PrimaryGe
                 }
 
                 _context.next = 14;
-                return connection.manager.find(User, {
+                return connection.manager.findOne(User, {
                   username: username.trim()
                 });
 
               case 14:
                 found = _context.sent;
 
-                if (found.length > 0) {
+                if (found) {
                   this.errors.username.push("".concat(username.trim(), " \u5DF2\u5B58\u5728"));
                 }
 

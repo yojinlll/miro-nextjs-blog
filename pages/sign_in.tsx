@@ -7,35 +7,36 @@ const SignUp: NextPage = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-    passwordConfirmation: '',
   })
   const [errors, setErrors] = useState({
     username: [],
     password: [],
-    passwordConfirmation: [],
   })
 
 
   const onSubmit = useCallback((e) => {
     e.preventDefault()
-
-    axios.post('/api/v1/users', formData)
+    
+    axios.post('/api/v1/sessions', formData)
       .then(res => {
         console.log('res', res.data);
-        // alert('注册成功！')
+        // alert('登录成功！')
+        setErrors({ username: [], password: [] })
       })
       .catch(err => {
         const error = err as AxiosError
         if (error.response) {
           // error.response.status === 422
           setErrors(error.response.data)
+          console.log(JSON.stringify(errors));
+          
         }
       })
   }, [formData])
 
   return (
     <>
-      <h1>注册</h1>
+      <h1>登录</h1>
       <p>{JSON.stringify(formData)}</p>
       <p>{JSON.stringify(errors)}</p>
       <form onSubmit={onSubmit}>
@@ -57,17 +58,9 @@ const SignUp: NextPage = () => {
           </label>
           <span style={{ fontSize: '14px', color: '#ee4949' }}>{errors.password?.length > 0 && errors.password[0]}</span>
         </div>
+
         <div>
-          <label>
-            确认密码
-            <input type="password" value={formData.passwordConfirmation}
-              onChange={e => setFormData({ ...formData, passwordConfirmation: e.target.value })}
-            />
-          </label>
-          <span style={{ fontSize: '14px', color: '#ee4949' }}>{errors.passwordConfirmation?.length > 0 && errors.passwordConfirmation[0]}</span>
-        </div>
-        <div>
-          <button type="submit">注册</button>
+          <button type="submit">登录</button>
         </div>
       </form>
     </>

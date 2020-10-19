@@ -1,10 +1,9 @@
 import { NextApiHandler } from 'next'
 import { User } from 'src/entity/User';
 
-const Posts: NextApiHandler = async (req, res) => {
+const Users: NextApiHandler = async (req, res) => {
   const { username, password, passwordConfirmation} = req.body
 
-  
   const user = new User()
   user.username = username.trim()
   user.password = password
@@ -24,4 +23,4 @@ const Posts: NextApiHandler = async (req, res) => {
   res.end()
 }
 
-export default Posts
+export default Users

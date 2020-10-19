@@ -64,8 +64,8 @@ export class User {
       this.errors.passwordConfirmation.push('密码不匹配')
     }
   
-    const found = await connection.manager.find(User, { username: username.trim() })
-    if(found.length > 0){
+    const found = await connection.manager.findOne(User, { username: username.trim() })
+    if(found){
       this.errors.username.push(`${username.trim()} 已存在`)
     }
   }
