@@ -1,10 +1,16 @@
-import Axios, { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { NextPage } from "next";
-import { useCallback, useState } from "react";
-import axios from "axios"
+import React, { useCallback, useState } from "react";
+import { Button, Form } from "components"
+import { FormValue } from "miro-react-demo";
 
 const SignUp: NextPage = () => {
-  const [formData, setFormData] = useState({
+  const fields = [
+    { name: "username", label: "用户名", input: {type: 'text'} },
+    { name: "password", label: "密码", input: { type: "password" } },
+    { name: "passwordConfirmation", label: "确认密码", input: { type: "password" } },
+  ]
+  const [formData, setFormData] = useState<FormValue>({
     username: '',
     password: '',
     passwordConfirmation: '',
@@ -15,19 +21,18 @@ const SignUp: NextPage = () => {
     passwordConfirmation: [],
   })
 
-
-  const onSubmit = useCallback((e) => {
-    e.preventDefault()
-
+  const onFormDataChange = useCallback(async (newValue: FormValue) => {
+    setFormData(newValue)
+  }, [formData])
+  const onFormSubmit = useCallback((e) => {
     axios.post('/api/v1/users', formData)
       .then(res => {
-        console.log('res', res.data);
         // alert('注册成功！')
+        setErrors({ username: [], password: [], passwordConfirmation: [], })
       })
       .catch(err => {
         const error = err as AxiosError
         if (error.response) {
-          // error.response.status === 422
           setErrors(error.response.data)
         }
       })
@@ -36,40 +41,21 @@ const SignUp: NextPage = () => {
   return (
     <>
       <h1>注册</h1>
-      <p>{JSON.stringify(formData)}</p>
-      <p>{JSON.stringify(errors)}</p>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>
-            用户名
-            <input type="text" value={formData.username}
-              onChange={e => setFormData({ ...formData, username: e.target.value })}
-            />
-          </label>
-          <span style={{ fontSize: '14px', color: '#ee4949' }}>{errors.username?.length > 0 && errors.username[0]}</span>
-        </div>
-        <div>
-          <label>
-            密码
-            <input type="password" value={formData.password}
-              onChange={e => setFormData({ ...formData, password: e.target.value })}
-            />
-          </label>
-          <span style={{ fontSize: '14px', color: '#ee4949' }}>{errors.password?.length > 0 && errors.password[0]}</span>
-        </div>
-        <div>
-          <label>
-            确认密码
-            <input type="password" value={formData.passwordConfirmation}
-              onChange={e => setFormData({ ...formData, passwordConfirmation: e.target.value })}
-            />
-          </label>
-          <span style={{ fontSize: '14px', color: '#ee4949' }}>{errors.passwordConfirmation?.length > 0 && errors.passwordConfirmation[0]}</span>
-        </div>
-        <div>
-          <button type="submit">注册</button>
-        </div>
-      </form>
+      <p>formData: {JSON.stringify(formData)}</p>
+      <p>errors: {JSON.stringify(errors)}</p>
+
+      <div style={{maxWidth: 280}}>
+        <Form
+          value={formData}
+          fields={fields}
+          onChange={onFormDataChange}
+          onSubmit={onFormSubmit}
+          errors={errors}
+          footer={
+            <Button type="submit" style={{marginRight: 20}}>注册</Button>
+          }
+        />
+      </div>
     </>
   )
 }

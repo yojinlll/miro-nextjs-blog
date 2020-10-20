@@ -20,6 +20,7 @@
     "lodash": "^4.17.20",
     "marked": "^1.2.0",
     "md5": "^2.3.0",
+    "miro-react-demo": "^0.0.3",
     "next": "9.5.5",
     "next-iron-session": "^4.1.9",
     "pg": "^8.4.1",
