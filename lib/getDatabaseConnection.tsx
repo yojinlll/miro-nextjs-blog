@@ -15,7 +15,7 @@ export const getDatabaseConnection = async () => {
 
     manager.has('default') && await manager.get('default').close()
     
-    // @ts-ignore
+    // @ts-ignore, 让 typeorm 识别已声明的实体
     return createConnection({
       ...config,
       "entities": [ Post, User, Comment ]
