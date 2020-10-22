@@ -1,8 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { NextPage } from "next";
-import React, { useCallback, useState } from "react";
-import { Button, Form } from "components"
-import { FormValue } from "miro-react-demo";
+import { Button } from "components"
 import { useForm } from "hooks/useForm";
 
 const PostsNew: NextPage = (props) => {

@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
-import { usePosts } from "hooks/usePosts";
-import { getPosts } from "lib/posts";
 import { getDatabaseConnection } from "lib/getDatabaseConnection";
 import { Post } from "src/entity/Post";
 
@@ -11,16 +8,12 @@ type Props = {
 }
 
 const PostsIndex: NextPage<Props> = (props) => {
-  // const {posts, isLoading, isEmpty} = usePosts()
-
   return (
     <div>
-      <h1>posts 列表</h1>
+      <h1>文章列表</h1>
       {
-        // isLoading ? 'loading' :
         <div>
           {
-            // isEmpty ? "没有数据" :
             props.posts.map(i => {
               return (
                 <div key={i.id}>
