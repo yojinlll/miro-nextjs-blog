@@ -22,12 +22,12 @@ export class SignIn {
 
     if (this.username.trim() === '') {
       this.errors.username.push('请填写用户名')
-    }
-
-    if (this.user) {
-      this.user.passwordDigest !== md5(this.password) && this.errors.password.push('密码不匹配')
-    } else {
-      this.errors.username.push('用户名不存在')
+    }else{
+      if (this.user) {
+        this.user.passwordDigest !== md5(this.password) && this.errors.password.push('密码不匹配')
+      } else {
+        this.errors.username.push('用户名不存在')
+      }
     }
 
     if(this.password === ''){

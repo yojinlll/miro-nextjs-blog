@@ -5,7 +5,7 @@ import { User } from "src/entity/User";
 import { withSession } from "lib/withSession";
 import { Button } from "components"
 import { useForm } from "hooks/useForm";
-import qs from "query-string"
+import qs from "querystring"
 
 const SignIn: NextPage<{user: User}> = (props) => {
   const {form, setErrors} = useForm({
@@ -28,8 +28,11 @@ const SignIn: NextPage<{user: User}> = (props) => {
         .then(res => {
           setErrors({ username: [], password: [] })
           alert('登录成功！')
-          const query = qs.parse(window.location.search)
-          window.location.href = query.returnTo.toString()
+
+          if(window.location.search){
+            const query = qs.parse(window.location.search.substr(1))
+            window.location.href = query.returnTo.toString()
+          }
         })
         .catch(err => {
           const error = err as AxiosError
