@@ -26,16 +26,16 @@ const PostsNew: NextPage = (props) => {
   const onFormSubmit = useCallback((e) => {
     console.log('onFormSubmit', formData);
     
-    // axios.post('/api/v1/users', formData)
-    //   .then(res => {
-    //     // alert('done！')
-    //   })
-    //   .catch(err => {
-    //     const error = err as AxiosError
-    //     if (error.response) {
-    //       // error
-    //     }
-    //   })
+    axios.post('/api/v1/posts', formData)
+      .then(res => {
+        // alert('done！')
+      })
+      .catch(err => {
+        const error = err as AxiosError
+        if (error.response) {
+          // error
+        }
+      })
   }, [formData])
 
   return (

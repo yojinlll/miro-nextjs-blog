@@ -14,16 +14,18 @@ export class Post {
   content: string
 
   @Column('int')
-  authorId: string
+  authorId: number
 
   @CreateDateColumn()
   createdAt: Date
   @CreateDateColumn()
   updatedAt: Date
 
-  @ManyToOne(type => User, user => user.posts)
+  // @ManyToOne(type => User, user => user.posts)
+  @ManyToOne('User' , 'posts')
   author: User
   
-  @OneToMany(type => Comment, comment => comment.post)
+  // @OneToMany(type => Comment, comment => comment.post)
+  @OneToMany('Comment', 'post')
   comments: Comment[]
 }

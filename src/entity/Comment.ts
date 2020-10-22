@@ -15,10 +15,12 @@ export class Comment {
   @CreateDateColumn()
   updatedAt: Date
 
-  @ManyToOne(type => User, user => user.comments)
+  // @ManyToOne(type => User, user => user.comments)
+  @ManyToOne('User', 'comments')
   user: User
 
-  @ManyToOne(type => Post, post => post.comments)
+  // @ManyToOne(type => Post, post => post.comments)
+  @ManyToOne('Post', 'comments')
   post: Post
 
 }

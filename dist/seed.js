@@ -47,10 +47,13 @@ var _User = require("./entity/User");
             return manager.save(c1);
 
           case 18:
-            connection.close();
-            console.log('Done!');
+            _context.next = 20;
+            return connection.close();
 
           case 20:
+            console.log('Done!');
+
+          case 21:
           case "end":
             return _context.stop();
         }

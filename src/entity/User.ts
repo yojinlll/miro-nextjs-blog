@@ -21,10 +21,12 @@ export class User {
   @CreateDateColumn()
   updatedAt: Date
 
-  @OneToMany(type => Post, post => post.author)
+  // @OneToMany(type => Post, post => post.author)
+  @OneToMany('Post', 'author')
   posts: Post[]
   
-  @OneToMany(type  => Comment, comment => comment.user)
+  // @OneToMany(type  => Comment, comment => comment.user)
+  @OneToMany('Comment', 'user')
   comments: Comment[]
 
   /**------------ */
