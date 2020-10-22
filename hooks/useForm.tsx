@@ -1,7 +1,5 @@
 import { Form } from "components"
-import { Function } from "lodash"
 import { FormValue } from "miro-react-demo"
-import { FormInput } from "miro-react-demo/dist/lib/form/form"
 import React, { useCallback, useState } from "react"
 
 type useFormOptions = {
@@ -9,7 +7,7 @@ type useFormOptions = {
   fields: Array<{
     name: string;
     label: string;
-    input: FormInput;
+    input: { type: string };
   }>;
   buttons: React.ReactChild;
   submit: (params: FormValue)=>void
@@ -31,9 +29,23 @@ export function useForm(options: useFormOptions) {
     options.submit(formData)
   }, [formData])
 
+  const fields = options.fields.map(field => {
+    if(field.input.type === 'textarea'){
+      return {
+        ...field,
+        input: <textarea value={formData['content']} onChange={(e)=>{
+          const newFormValue = {...formData, content: e.target.value}
+          setFormData(newFormValue)
+        }}></textarea>
+      }
+    }else{
+      return field
+    }
+  })
+  
   const form = <Form
     value={formData}
-    fields={options.fields}
+    fields={fields}
     onChange={onFormDataChange}
     onSubmit={onFormSubmit}
     errors={errors}

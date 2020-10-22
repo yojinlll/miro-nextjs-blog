@@ -22,8 +22,9 @@ const SignUp: NextPage = () => {
       
       axios.post('/api/v1/users', formData)
         .then(res => {
-          // alert('注册成功！')
+          alert('注册成功！')
           setErrors({ username: [], password: [], passwordConfirmation: [], })
+          window.location.pathname = '/sign_in'
         })
         .catch(err => {
           const error = err as AxiosError
