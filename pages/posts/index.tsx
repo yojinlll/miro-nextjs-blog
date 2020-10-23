@@ -21,7 +21,7 @@ const PostsIndex: NextPage<Props> = (props) => {
       <h1>文章列表</h1>
       <h2>共 {props.count} 篇,  每页 {props.perPage} 篇</h2>
       {
-        <div style={{ minHeight: 200 }}>
+        <div style={{ minHeight: 600 }}>
           {
             props.posts.map(i => {
               return (
@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const search = context.req.url.substr(index + 1)
   const query = qs.parse(search)
   const page = parseInt(query.page?.toString() || '1')
-  const perPage = 1
+  const perPage = 12
 
   const connection = await getDatabaseConnection()
   const [posts, count] = await connection.manager.findAndCount(Post, { skip: (page - 1) * perPage, take: perPage })

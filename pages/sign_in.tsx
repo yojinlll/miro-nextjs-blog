@@ -22,8 +22,6 @@ const SignIn: NextPage<{user: User}> = (props) => {
       <Button>注册</Button>
     </Fragment>),
     submit: (formData) => {
-      console.log('submit', formData);
-      
       axios.post('/api/v1/sessions', formData)
         .then(res => {
           setErrors({ username: [], password: [] })

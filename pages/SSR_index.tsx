@@ -15,8 +15,6 @@ type Props = {
 }
 
 const SSRIndex: NextPage<Props> = (props) => {
-  console.log('props.post', props.posts);
-  
   return (
     <div>
       <h1>文章列表</h1>

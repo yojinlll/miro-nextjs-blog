@@ -8,8 +8,6 @@ const markdownDir = path.join(process.cwd(), "markdown")
 // 本地获取数据
 export const getPosts = async () => {
   const fileNames = await fsPromise.readdir(markdownDir)
-  console.log('node-data', fileNames);
-  
   const results = fileNames.map(fileName => {
     const fullPath = path.join(markdownDir, fileName)
     const id = fileName.replace(/\.md$/g, '')
