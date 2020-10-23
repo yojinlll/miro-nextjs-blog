@@ -2,7 +2,7 @@ import { Form } from "components"
 import { FormValue } from "miro-react-demo"
 import React, { useCallback, useState } from "react"
 
-type useFormOptions = {
+type UseFormOptions = {
   initFormData: FormValue;
   fields: Array<{
     name: string;
@@ -13,7 +13,7 @@ type useFormOptions = {
   submit: (params: FormValue)=>void
 }
 
-export function useForm(options: useFormOptions) {
+export function useForm(options: UseFormOptions) {
   const [formData, setFormData] = useState<FormValue>(options.initFormData)
   const [errors, setErrors] = useState(() => {
     const e: { [K: string]: string[] } = {}
