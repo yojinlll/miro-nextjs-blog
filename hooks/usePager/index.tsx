@@ -31,9 +31,6 @@ export const usePager = (options: UsePagerOptions) => {
         : result.concat(-1, n)
     ), [])
 
-  console.log(y);
-
-
   const pager = (
     <div>
       {
