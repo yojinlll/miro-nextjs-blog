@@ -1,4 +1,4 @@
-import { createConnection, getConnection, getConnectionManager } from "typeorm";
+import { createConnection, getConnectionManager } from "typeorm";
 import "reflect-metadata";
 import { Post } from "src/entity/Post";
 import { User } from "src/entity/User";
@@ -12,8 +12,9 @@ import config from "ormconfig.json"
 export const getDatabaseConnection = async () => {
   return (async function () {
     const manager = getConnectionManager()
-
-    manager.has('default') && await manager.get('default').close()
+    
+    const current = manager.has('default') && manager.get('default')
+    if(current.isConnected){ await current.close() }    
     
     // @ts-ignore, 让 typeorm 识别已声明的实体
     return createConnection({
