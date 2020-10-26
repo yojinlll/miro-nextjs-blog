@@ -24,18 +24,12 @@ const PostEdit: NextPage<Props> = (props) => {
     buttons: <Button type="submit" style={{ marginRight: 20 }}>提交</Button>,
     submit: (formData) => {
       if (formData.title.trim() && formData.content) {
-        axios.patch(`/api/v1/posts/${id}`, { ...formData, id })
+        axios.patch(`/api/v1/posts/${id}`, formData)
           .then(res => {
-            alert('done！')
+            alert('done!')
           })
           .catch(err => {
-            const error = err as AxiosError
-            if (error.response) {
-              if (error.response.status === 401) {
-                alert('未登录')
-                window.location.href = `/sign_in?returnTo=${window.location.pathname}`
-              }
-            }
+            alert('error!')
           })
       } else {
         alert('请输入标题和内容')
