@@ -15,14 +15,18 @@ const Posts: NextApiHandler = withSession(async (req, res) => {
   
   const connection = await getDatabaseConnection();
 
-  if (req.method === 'POST') {
-    const {title, content} = req.body;
+  if (req.method === 'PATCH') {
+    const {title, content,id} = req.body;
 
-    const post = new Post();
+    const post = await connection.manager.findOne(Post, id)
+    if(user.id !== post.authorId){
+      res.statusCode = 403  // 身份不对，无权限
+      res.json('你并不是原作者，无权修改');
+      return 
+    }
+    
     post.title = title;
     post.content = content;
-    post.authorId = user.id;
-    post.author = user;
 
     await connection.manager.save(post);
     res.statusCode = 200

@@ -12,7 +12,7 @@ const PostsNew: NextPage = (props) => {
     ],
     buttons: <Button type="submit" style={{marginRight: 20}}>提交</Button>,
     submit: (formData) => {
-      if(formData.title && formData.content){
+      if(formData.title.trim() && formData.content){
         axios.post('/api/v1/posts', formData)
           .then(res => {
             alert('done！')

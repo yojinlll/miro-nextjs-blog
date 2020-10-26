@@ -48,6 +48,7 @@ const PostsIndex: NextPage<Props> = (props) => {
 
       <style jsx>{`
       .posts{
+        width: 94vw;
         max-width: 800px;
         max-height: 800px;
         margin: 0 auto;

@@ -10,38 +10,36 @@ import { Post } from "src/entity/Post";
 type Props = {
   id: number,
   post: Post
-  currentUser: User
-  isPostAuthor: boolean
 }
 
 const PostEdit: NextPage<Props> = (props) => {
   const { post: { title, content }, id } = props
-  
-  const {form, setErrors} = useForm({
+
+  const { form, setErrors } = useForm({
     initFormData: { title, content },
     fields: [
-      { name: "title", label: "title", input: {type: 'text'} },
-      { name: "content", label: "content", input: {type: 'textarea'}},
+      { name: "title", label: "title", input: { type: 'text' } },
+      { name: "content", label: "content", input: { type: 'textarea' } },
     ],
-    buttons: <Button type="submit" style={{marginRight: 20}}>提交</Button>,
+    buttons: <Button type="submit" style={{ marginRight: 20 }}>提交</Button>,
     submit: (formData) => {
-      // if(formData.title && formData.content){
-      //   axios.patch(`/api/v1/posts/${id}`, formData)
-      //     .then(res => {
-      //       alert('done！')
-      //     })
-      //     .catch(err => {
-      //       const error = err as AxiosError
-      //       if (error.response) {
-      //         if(error.response.status === 401){
-      //           alert('未登录')
-      //           window.location.href = `/sign_in?returnTo=${window.location.pathname}`
-      //         }
-      //       }
-      //     })
-      // }else{
-      //   alert('请输入标题和内容')
-      // }
+      if (formData.title.trim() && formData.content) {
+        axios.patch(`/api/v1/posts/${id}`, { ...formData, id })
+          .then(res => {
+            alert('done！')
+          })
+          .catch(err => {
+            const error = err as AxiosError
+            if (error.response) {
+              if (error.response.status === 401) {
+                alert('未登录')
+                window.location.href = `/sign_in?returnTo=${window.location.pathname}`
+              }
+            }
+          })
+      } else {
+        alert('请输入标题和内容')
+      }
     }
   })
 
@@ -51,8 +49,8 @@ const PostEdit: NextPage<Props> = (props) => {
         <h1>Edit</h1>
 
         <div className="post-edit">
-          { form }
-        </div>      
+          {form}
+        </div>
       </div>
 
       <style jsx>{`
@@ -100,21 +98,16 @@ const PostEdit: NextPage<Props> = (props) => {
 
 export default PostEdit
 
-export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
-  // @ts-ignore
-  const currentUser = JSON.parse(context.req.session.get('currentUser') || null)
-
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const id = context.params.id.toString()
   const connection = await getDatabaseConnection()
   const post = await connection.manager.findOne(Post, id)
   const _post = JSON.parse(JSON.stringify(post))
-  
+
   return {
     props: {
       id: parseInt(id),
       post: _post,
-      currentUser,
-      isPostAuthor: _post.authorId === currentUser.id
     }
   }
-})
+}

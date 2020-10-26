@@ -12,11 +12,10 @@ import { User } from "src/entity/User"
 type Props = {
   post: Post
   currentUser: User
-  isPostAuthor: boolean
 }
 
 const PostsShow: NextPage<Props> = (props) => {
-  const { post, currentUser, isPostAuthor } = props
+  const { post, currentUser } = props
 
   return (
     <>
@@ -24,7 +23,7 @@ const PostsShow: NextPage<Props> = (props) => {
         <header className="title flex">
           <h1>{post.title}</h1>
           
-          { isPostAuthor && <Link href="/posts/[id]/edit" as={`/posts/${post.id}/edit`}><a>
+          { currentUser && <Link href="/posts/[id]/edit" as={`/posts/${post.id}/edit`}><a>
             <Button>edit</Button>
           </a></Link>}
         </header>
@@ -65,7 +64,6 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = withSes
     props: {
       post: _post,
       currentUser,
-      isPostAuthor: _post.authorId === currentUser.id
     }
   }
 })
