@@ -31,7 +31,7 @@ export const usePager = (options: UsePagerOptions) => {
         : result.concat(-1, n)
     ), [])
 
-  const pager = (
+  const pager = totalPage > 1 && (
     <div>
       {
         page > 1 && <Link href={_hrefMaker(page - 1)}><a>上一页</a></Link>

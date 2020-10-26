@@ -14,7 +14,7 @@ const PostsNew: NextPage = (props) => {
     submit: (formData) => {
       axios.post('/api/v1/posts', formData)
         .then(res => {
-          // alert('done！')
+          alert('done！')
         })
         .catch(err => {
           const error = err as AxiosError

@@ -4,6 +4,7 @@ import { GetServerSideProps, GetStaticProps, NextPage } from "next"
 import Link from "next/link"
 import React from "react"
 import { Post } from "src/entity/Post"
+import marked from "marked"
 
 type Props = {
   post: Post
@@ -11,13 +12,30 @@ type Props = {
 
 const PostsShow: NextPage<Props> = (props) => {
   return (
-    <div>
-      <button>
-        <Link href={'/posts'}>go back</Link>
-      </button>
-      <h1>markdown</h1>
-      <article dangerouslySetInnerHTML={ {__html: props.post.content} } />
-    </div>
+    <>
+      <div className="wrapper">
+        {/* <button>
+          <Link href={'/posts'}>go back</Link>
+        </button> */}
+        <h1 className="title">{props.post.title}</h1>
+        <article className="content" dangerouslySetInnerHTML={ {__html: marked(props.post.content)} } />
+      </div>
+
+      <style jsx>{`
+        .wrapper{
+          max-width: 800px;
+          margin: 0 auto 24px;
+          padding: 0 16px;
+        }
+        .title{
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 16px;
+        }
+        .content{
+          margin-top: 42px;
+        }
+      `}</style>
+    </>
   )
 }
 
@@ -28,7 +46,6 @@ export default PostsShow
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (context) => {
   const connection = await getDatabaseConnection()
   const post = await connection.manager.findOne(Post, context.params.id)
-  
   
   return {
     props: {
