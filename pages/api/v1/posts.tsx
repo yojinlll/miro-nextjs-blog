@@ -8,7 +8,7 @@ const Posts: NextApiHandler = withSession(async (req, res) => {
   if (req.method === 'POST') {
     const {title, content} = req.body;
 
-    const user = JSON.parse(req.session.get('currentUser') || '0');
+    const user = JSON.parse(req.session.get('currentUser') || null);
     if (!user) {
       res.statusCode = 401;
       res.end('未登录');

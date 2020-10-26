@@ -24,7 +24,7 @@ export function useForm(options: UseFormOptions) {
 
   const onFormDataChange = useCallback(async (newValue: FormValue) => {
     setFormData(newValue)
-  }, [errors])
+  }, [formData])
   const onFormSubmit = useCallback((e) => {
     options.submit(formData)
   }, [formData])
@@ -33,7 +33,7 @@ export function useForm(options: UseFormOptions) {
     if(field.input.type === 'textarea'){
       return {
         ...field,
-        input: <textarea value={formData['content']} onChange={(e)=>{
+        input: <textarea className="field-textarea" value={formData['content']} onChange={(e)=>{
           const newFormValue = {...formData, content: e.target.value}
           setFormData(newFormValue)
         }}></textarea>

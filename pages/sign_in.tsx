@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import React, { Fragment } from "react";
 import { User } from "src/entity/User";
 import { withSession } from "lib/withSession";
 import { Button } from "components"
@@ -18,10 +17,10 @@ const SignIn: NextPage<{user: User}> = (props) => {
       { name: "username", label: "用户名", input: {type: 'text'} },
       { name: "password", label: "密码", input: { type: "password" } },
     ],
-    buttons: (<Fragment>
+    buttons: (<>
       <Button type="submit" style={{marginRight: 20}}>登录</Button>
       <Link href={`/sign_up`}><a><Button type="button">前往注册</Button></a></Link>
-    </Fragment>),
+    </>),
     submit: (formData) => {
       axios.post('/api/v1/sessions', formData)
         .then(res => {
@@ -32,7 +31,7 @@ const SignIn: NextPage<{user: User}> = (props) => {
             const query = qs.parse(window.location.search.substr(1))
             window.location.href = query.returnTo.toString()
           }else{
-            window.location.reload()
+            window.location.href = '/'
           }
         })
         .catch(err => {
@@ -60,11 +59,11 @@ export default SignIn
 
 export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
   // @ts-ignore
-  const user = context.req.session.get('currentUser')
+  const user = context.req.session.get('currentUser') || null
   
   return {
     props: {
-      user: JSON.parse(user || '0')
+      user: JSON.parse(user)
     }
   }
 })

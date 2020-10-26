@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import React from "react";
 import { Button } from "components"
 import { useForm } from "hooks/useForm";
+import Link from "next/link";
 
 const SignUp: NextPage = () => {
   const {form, setErrors} = useForm({
@@ -16,7 +17,10 @@ const SignUp: NextPage = () => {
       { name: "password", label: "密码", input: { type: "password" } },
       { name: "passwordConfirmation", label: "确认密码", input: { type: "password" } },
     ],
-    buttons: <Button type="submit" style={{marginRight: 20}}>注册</Button>,
+    buttons: (<>
+      <Button type="submit" style={{marginRight: 20}}>注册</Button>
+      <Link href={`/sign_in`}><a><Button type="button">已有账号</Button></a></Link>
+    </>),
     submit: (formData) => {
       axios.post('/api/v1/users', formData)
         .then(res => {

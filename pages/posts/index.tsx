@@ -1,10 +1,12 @@
-import { NextPage, GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps, GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { getDatabaseConnection } from "lib/getDatabaseConnection";
 import { Post } from "src/entity/Post";
 import { Button } from "components"
 import qs from "querystring"
 import { usePager } from "hooks/usePager";
+import { withSession } from "lib/withSession";
+import { User } from "src/entity/User";
 
 type Props = {
   posts: Post[],
@@ -12,14 +14,22 @@ type Props = {
   perPage: number
   page: number
   totalPage: number
+  currentUser: User | null
 }
 
 const PostsIndex: NextPage<Props> = (props) => {
+  const { currentUser } = props
   const { pager } = usePager(props)
+
   return (
     <div className="posts">
-      <h1>文章列表</h1>
-      {/* <h2>共 {props.count} 篇,  每页 {props.perPage} 篇</h2> */}
+      <header className="posts-header flex">
+        <h1>文章列表</h1>
+
+        { currentUser && <Link href="/posts/new"><a>
+          <Button>new</Button>
+        </a></Link> }
+      </header>
       {
         props.posts.map(i => {
           return (
@@ -33,15 +43,14 @@ const PostsIndex: NextPage<Props> = (props) => {
         })
       }
       <footer style={{ marginTop: 24 }}>
-        { pager }
+        {pager}
       </footer>
 
-    <style jsx>{`
+      <style jsx>{`
       .posts{
         max-width: 800px;
         max-height: 800px;
         margin: 0 auto;
-        padding: 16px
       }
       .one-post{
         border-bottom: 1px solid #ddd;
@@ -58,7 +67,10 @@ const PostsIndex: NextPage<Props> = (props) => {
 export default PostsIndex
 
 // 数据库获取数据
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
+  // @ts-ignore
+  const currentUser = JSON.parse(context.req.session.get('currentUser') || null)
+
   // 分页设置
   const index = context.req.url.indexOf('?')
   const search = context.req.url.substr(index + 1)
@@ -71,6 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      currentUser,
       posts: JSON.parse(JSON.stringify(posts)),
       count: count - 1,
       perPage,
@@ -78,7 +91,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       totalPage: Math.ceil((count - 1) / perPage)
     }
   }
-}
+})
 
 // 本地获取数据
 // export const getStaticProps: GetStaticProps = async () => {
