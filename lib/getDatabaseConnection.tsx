@@ -19,6 +19,7 @@ export const getDatabaseConnection = async () => {
     // @ts-ignore, 让 typeorm 识别已声明的实体
     return createConnection({
       ...config,
+      host: process.env.NODE_ENV === "production" ? "localhost" : config.host,
       "entities": [ Post, User, Comment ]
     })
   })()
