@@ -104,3 +104,8 @@ docker build -t blog/node-web-app .
 // 由于使用的是 Docker Toolbox（得到IP）， 所以运行后需要启动相应 IP 的 3000 端口，便可正常浏览网页。
 docker run --name blog -p 3000:3000 -d blog/node-web-app
 ```
+
+- 脚本部署
+```
+ssh blog@dev 'bash -s' < bin/deploy.sh
+```

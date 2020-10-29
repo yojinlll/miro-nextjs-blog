@@ -6,7 +6,7 @@ const Home: NextPage = (props) => {
     <>
       <div className="cover">
         <img src="/logo.svg" />
-        <h1>Jin blog test</h1>
+        <h1>Jin blog</h1>
         <p>
           <Link href="/posts"><a>blog list</a></Link>
         </p>
