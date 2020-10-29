@@ -34,7 +34,6 @@ const PostsIndex: NextPage<Props> = (props) => {
         props.posts.map(i => {
           return (
             <div key={i.id} className="one-post" >
-              {/* <Link href={`/posts/${i.id}`}> */}
               <Link href="/posts/[id]" as={`/posts/${i.id}`}>
                 <a>{i.title}</a>
               </Link>
@@ -46,21 +45,22 @@ const PostsIndex: NextPage<Props> = (props) => {
         {pager}
       </footer>
 
+
       <style jsx>{`
-      .posts{
-        width: 94vw;
-        max-width: 800px;
-        max-height: 800px;
-        margin: 0 auto;
-      }
-      .one-post{
-        border-bottom: 1px solid #ddd;
-        padding: 8px 0;
-      }
-      .one-post > a:hover{
-        color: #1b9cff;
-      }
-    `}</style>
+        .posts{
+          width: 94vw;
+          max-width: 800px;
+          max-height: 800px;
+          margin: 0 auto;
+        }
+        .one-post{
+          border-bottom: 1px solid #ddd;
+          padding: 8px 0;
+        }
+        .one-post > a:hover{
+          color: #1b9cff;
+        }
+      `}</style>
     </div>
   )
 }

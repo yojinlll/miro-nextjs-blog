@@ -105,7 +105,7 @@ docker build -t blog/node-web-app .
 docker run --name blog -p 3000:3000 -d blog/node-web-app
 ```
 
-- 脚本部署
+- 脚本部署（使用前提是在服务器上创建好数据库和创建好表）
 ```
 ssh blog@dev 'bash -s' < bin/deploy.sh
 ```

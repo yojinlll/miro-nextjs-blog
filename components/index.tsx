@@ -1,4 +1,4 @@
-import dynamic  from "next/dynamic";
+import dynamic from "next/dynamic";
 
 export const Button = dynamic(
   () => import("miro-react-demo").then((components) => components.Button),

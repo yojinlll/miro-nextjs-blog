@@ -1,14 +1,28 @@
-import { NextPage } from "next";
+import { withSession } from "lib/withSession";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import Link from "next/link";
+import { useEffect } from "react";
+import { User } from "src/entity/User";
+import { useRouter } from 'next/router'
 
-const Home: NextPage = (props) => {
+type Props = {
+  currentUser: User
+}
+
+const Home: NextPage<Props> = (props) => {
+  const router = useRouter()
+  const { currentUser } = props
+  useEffect(() => {
+    currentUser && router.push('/posts')
+  }, [currentUser])
+
   return (
     <>
       <div className="cover">
         <img src="/logo.svg" />
-        <h1>Jin blog</h1>
+        <h1>Mironote</h1>
         <p>
-          <Link href="/posts"><a>blog list</a></Link>
+          <Link href="/sign_in"><a>注册/登录</a></Link>
         </p>
       </div>
 
@@ -26,3 +40,14 @@ const Home: NextPage = (props) => {
 }
 
 export default Home
+
+export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
+  // @ts-ignore
+  const currentUser = JSON.parse(context.req.session.get('currentUser') || null)
+
+  return {
+    props: {
+      currentUser
+    }
+  }
+})
