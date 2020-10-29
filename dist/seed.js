@@ -26,7 +26,7 @@ var _User = require("./entity/User");
             manager = connection.manager;
             u1 = new _User.User();
             u1.username = 'jin';
-            u1.passwordDigest = 'jin123';
+            u1.password = '123';
             _context.next = 6;
             return manager.save(u1);
 

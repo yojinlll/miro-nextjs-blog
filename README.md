@@ -3,24 +3,48 @@
 ## 启动项目
 
 ```
-yarn dev
+// 启动虚拟机
+docker run --name psql -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2 
 
-// 该命令包含 next dev 和 yarn typeorm:build
-// 为了统一 ts 转换 js 的标准，移除 typeorm 自带的 ts-node 依赖，与 nextjs 一样， typeorm 的 ts 文件同样使用 babel 编译
-// yarn typeorm:build, babel 会监控文件的变化，将 src 下的 ts 文件 （typeorm 相关） 编译到 dist, 让 node 执行 dist 目录下的 js（typeorm 相关）
-// 最后通过 node 执行 dist 目录下的文件
+// 进入数据库
+yarn docker:psql
+
+// 创建数据库
+CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
+
+// 通过 typeorm 在 blog_development 中创建表
+yarn m:run
+
+// 在 blog_development 中创建一份测试数据
+node dist/seed.js
+
+// 启动 http://localhost:3000 端口
+yarn dev
 ```
 
-## 启动数据库
+## Docker
 
 - 启动虚拟机，得到虚拟机id
 ```
-docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
+docker run --name psql -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
 ```
 
 - 进入虚拟机
 ```
-docker exec -it de6aa18355bf bash
+docker exec -it psql bash
+```
+
+- 清空之前记录
+
+```
+docker ps
+docker kill 容器id
+docker rm 容器id
+
+rm -rf blog-data
+或
+docker container prune 
+docker volume rm blog-data
 ```
 
 ## PostgreSQL
@@ -36,12 +60,12 @@ psql -U blog
 
 - 创建 database
 ```
-CREATE DATABASE ${database name} ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
+CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
 ```
 
 - 删除 database
 ```
-drop database ${database name}
+drop database blog_development
 ```
 
 - 操作 database
@@ -71,25 +95,12 @@ typeorm migration:revert
 typeorm entity:create
 ```
 
-## 清空之前记录
+## 部署
 
+- Docker 化
 ```
-docker ps
-docker kill 容器id
-docker rm 容器id
+docker build -t blog/node-web-app .
 
-rm -rf blog-data
-或
-docker container prune 
-docker volume rm blog-data
-```
-
-## 创建数据库
-
-```
-docker exec -it <id> bash
-psql -U blog
-docker run -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
-
-CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
+// 由于使用的是 Docker Toolbox（得到IP）， 所以运行后需要启动相应 IP 的 3000 端口，便可正常浏览网页。
+docker run --name blog -p 3000:3000 -d blog/node-web-app
 ```

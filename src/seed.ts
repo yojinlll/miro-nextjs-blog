@@ -9,7 +9,7 @@ createConnection().then(async connection => {
 
   const u1 = new User()
   u1.username = 'jin'
-  u1.passwordDigest = 'jin123'
+  u1.password = '123'
   await manager.save(u1)
 
   const p1 = new Post()
