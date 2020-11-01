@@ -22,6 +22,7 @@ const Posts: NextApiHandler = withSession(async (req, res) => {
     const post = await connection.manager.findOne(Post, id)
     post.title = title;
     post.content = content;
+    post.updatedAt = new Date()
     // if(user.id !== post.authorId){
     //   res.statusCode = 403  // 身份不对，无权限
     //   res.json('你并不是原作者，无权修改');

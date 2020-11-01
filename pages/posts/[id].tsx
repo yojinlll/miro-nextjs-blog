@@ -1,7 +1,7 @@
 import { getDatabaseConnection } from "lib/getDatabaseConnection"
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next"
 import Link from "next/link"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback } from "react"
 import { Post } from "src/entity/Post"
 import marked from "marked"
 import { Button } from "components"
@@ -9,6 +9,7 @@ import { withSession } from "lib/withSession"
 import { User } from "src/entity/User"
 import axios from "axios";
 import Router from "next/router"
+import { useRedirect } from "hooks/useRedirect"
 
 type Props = {
   id: number
@@ -29,25 +30,26 @@ const PostsShow: NextPage<Props> = (props) => {
       })
   }, [id])
 
-  useEffect(() => {
-    !post && Router.push("/404")
-  }, [post])
+  useRedirect(currentUser, post)
 
   return (
     <>
       {
         post && <div className="wrapper">
-          <header className="title flex">
-            <h1>{post.title}</h1>
+          <header className="title">
+            <div className="actions-wrap">
+              <Button onClick={()=>Router.push("/posts")}>Back</Button>
 
-            {currentUser && (
-              <div className="actions">
-                <Link href="/posts/[id]/edit" as={`/posts/${post.id}/edit`}><a>
-                  <Button>Edit</Button>
-                </a></Link>
-                <Button onClick={onDeletePost}>Delete</Button>
-              </div>
-            )}
+              {currentUser && (
+                <div className="actions">
+                  <Link href="/posts/[id]/edit" as={`/posts/${post.id}/edit`}><a>
+                    <Button>Edit</Button>
+                  </a></Link>
+                  <Button onClick={onDeletePost}>Delete</Button>
+                </div>
+              )}
+            </div>
+            <h1>{post.title}</h1>
           </header>
           <article className="content" dangerouslySetInnerHTML={{ __html: marked(post.content) }} />
         </div>
@@ -63,8 +65,20 @@ const PostsShow: NextPage<Props> = (props) => {
           border-bottom: 1px solid #ddd;
           padding-bottom: 16px;
         }
+        .title > h1{ 
+          margin-bottom: 0;
+          word-break: break-all;
+        }
         .content{
           margin-top: 42px;
+        }
+        .actions-wrap{
+          margin-top: 6px;
+          display: flex;
+          justify-content: space-between;
+        }
+        .actions{
+          display: inline-block;
         }
         .actions > a:first-child{
           margin-right: 12px
@@ -84,7 +98,7 @@ export const getServerSideProps: GetServerSideProps<any, { id: string }> = withS
 
   const id = context.params.id.toString()
   const connection = await getDatabaseConnection()
-  const post = await connection.manager.findOne(Post, id)
+  const post = await connection.getRepository(Post).findOne({ where: { authorId: currentUser?.id, id } })
   const _post = JSON.parse(JSON.stringify(post) || null)
 
   return {

@@ -7,6 +7,7 @@ import qs from "querystring"
 import { usePager } from "hooks/usePager";
 import { withSession } from "lib/withSession";
 import { User } from "src/entity/User";
+import { useRedirect } from "hooks/useRedirect";
 
 type Props = {
   posts: Post[],
@@ -21,26 +22,28 @@ const PostsIndex: NextPage<Props> = (props) => {
   const { currentUser } = props
   const { pager } = usePager(props)
 
+  useRedirect(currentUser)
+
   return (
     <div className="posts">
       <header className="posts-header flex">
-        <h1>文章列表</h1>
+        <h1>Notes</h1>
 
         { currentUser && <Link href="/posts/new"><a>
-          <Button>new</Button>
+          <Button>New</Button>
         </a></Link> }
       </header>
-      {
-        props.posts.map(i => {
-          return (
-            <div key={i.id} className="one-post" >
-              <Link href="/posts/[id]" as={`/posts/${i.id}`}>
-                <a>{i.title}</a>
+      <main className="posts-list">
+        {
+          props.posts.map(i => {
+            return (
+              <Link href="/posts/[id]" as={`/posts/${i.id}`} key={i.id}>
+                <a className="post-item">{i.title}</a>
               </Link>
-            </div>
-          )
-        })
-      }
+            )
+          })
+        }
+      </main>
       <footer style={{ marginTop: 24 }}>
         {pager}
       </footer>
@@ -53,12 +56,16 @@ const PostsIndex: NextPage<Props> = (props) => {
           max-height: 800px;
           margin: 0 auto;
         }
-        .one-post{
+        .post-item{
           border-bottom: 1px solid #ddd;
           padding: 8px 0;
+          display: block;
         }
-        .one-post > a:hover{
-          color: #1b9cff;
+        .post-item:hover{
+          color: #1b9cff; cursor: pointer;
+        }
+        .posts-list{
+          height: 80vh;
         }
       `}</style>
     </div>
@@ -80,7 +87,12 @@ export const getServerSideProps: GetServerSideProps = withSession(async (context
   const perPage = 12
 
   const connection = await getDatabaseConnection()
-  const [posts, count] = await connection.manager.findAndCount(Post, { skip: (page - 1) * perPage, take: perPage })
+  const [posts, count] = await connection.getRepository(Post).findAndCount({
+    where: { authorId: currentUser?.id },
+    order: { id: "DESC" },
+    skip: (page - 1) * perPage,
+    take: perPage
+  })
 
   return {
     props: {

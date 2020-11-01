@@ -23,6 +23,8 @@ const Posts: NextApiHandler = withSession(async (req, res) => {
     post.content = content;
     post.authorId = user.id;
     post.author = user;
+    post.createdAt = new Date();
+    post.updatedAt = new Date();
 
     await connection.manager.save(post);
     res.statusCode = 200

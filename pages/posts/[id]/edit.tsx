@@ -1,22 +1,24 @@
 import { getDatabaseConnection } from "lib/getDatabaseConnection";
-import { withSession } from "lib/withSession";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { User } from "src/entity/User";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { Button } from "components"
 import { useForm } from "hooks/useForm";
 import { Post } from "src/entity/Post";
+import { withSession } from "lib/withSession";
+import { User } from "src/entity/User";
+import { useRedirect } from "hooks/useRedirect";
 
 type Props = {
-  id: number,
+  currentUser: User | null
+  id: number
   post: Post
 }
 
 const PostEdit: NextPage<Props> = (props) => {
-  const { post: { title, content }, id } = props
+  const { post, id, currentUser } = props
 
   const { form, setErrors } = useForm({
-    initFormData: { title, content },
+    initFormData: post || { title: '', content: '' },
     fields: [
       { name: "title", label: "title", input: { type: 'text' } },
       { name: "content", label: "content", input: { type: 'textarea' } },
@@ -27,6 +29,7 @@ const PostEdit: NextPage<Props> = (props) => {
         axios.patch(`/api/v1/posts/${id}`, formData)
           .then(res => {
             alert('done!')
+            window.history.go(-1)
           })
           .catch(err => {
             alert('error!')
@@ -37,11 +40,15 @@ const PostEdit: NextPage<Props> = (props) => {
     }
   })
 
+  useRedirect(currentUser, post)
+
   return (
     <>
       <div className="wrapper">
-        <h1>Edit</h1>
-
+        <header className="edit-header">
+          <Button onClick={()=>{ window.history.go(-1) }}>Back</Button>
+        </header>
+        
         <div className="post-edit">
           {form}
         </div>
@@ -52,6 +59,9 @@ const PostEdit: NextPage<Props> = (props) => {
           width: 90vw;
           max-width: 800px;
           margin: 0 auto;
+        }
+        .edit-header{
+          margin: 12px 0 24px;
         }
       `}</style>
       <style jsx global>{`
@@ -92,16 +102,20 @@ const PostEdit: NextPage<Props> = (props) => {
 
 export default PostEdit
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
+  // @ts-ignore
+  const currentUser = JSON.parse(context.req.session.get('currentUser') || null)
+
   const id = context.params.id.toString()
   const connection = await getDatabaseConnection()
-  const post = await connection.manager.findOne(Post, id)
-  const _post = JSON.parse(JSON.stringify(post))
+  const post = await connection.getRepository(Post).findOne({ where: { authorId: currentUser?.id, id } })
+  const _post = JSON.parse(JSON.stringify(post || null))
 
   return {
     props: {
+      currentUser,
       id: parseInt(id),
-      post: _post,
+      post: _post
     }
   }
-}
+})

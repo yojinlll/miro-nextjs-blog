@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import { NextPage } from "next";
 import { Button } from "components"
 import { useForm } from "hooks/useForm";
+import Router from "next/router"
 
 const PostsNew: NextPage = (props) => {
   const {form, setErrors} = useForm({
@@ -16,6 +17,7 @@ const PostsNew: NextPage = (props) => {
         axios.post('/api/v1/posts', formData)
           .then(res => {
             alert('done！')
+            Router.push("/posts")
           })
           .catch(err => {
             const error = err as AxiosError
