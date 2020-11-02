@@ -45,12 +45,26 @@ const SignIn: NextPage<{user: User}> = (props) => {
 
   return (
     <>
-      <h1>user: {  props.user?.username }</h1>
-      <h1>登录</h1>
-
-      <div style={{maxWidth: 280}}>
-       { form }
+      <div className="sign-in">
+        <h1>M</h1>
+        { form }
       </div>
+
+      <style jsx>{`
+        .sign-in{
+          max-width: 280px;
+          margin: 0 auto;
+        }
+        h1{
+          font-size: 120px;
+          text-align: center;
+          margin-bottom: 32px;
+          font-family: Cardo,serif;
+        }
+        @media (max-width: 320px){
+          h1{ font-size: 80px;}
+        }
+      `}</style>
     </>
   )
 }

@@ -10,6 +10,7 @@ import { User } from "src/entity/User"
 import axios from "axios";
 import Router from "next/router"
 import { useRedirect } from "hooks/useRedirect"
+import { dateFormat } from "lib/utils"
 
 type Props = {
   id: number
@@ -21,11 +22,11 @@ const PostsShow: NextPage<Props> = (props) => {
   const { id, post, currentUser } = props
   const onDeletePost = useCallback(() => {
     axios.delete(`/api/v1/posts/${id}`)
-      .then(res => {
+      .then(() => {
         alert('done!')
         Router.push("/posts")
       })
-      .catch(err => {
+      .catch(() => {
         alert('error!')
       })
   }, [id])
@@ -34,32 +35,31 @@ const PostsShow: NextPage<Props> = (props) => {
 
   return (
     <>
-      {
-        post && <div className="wrapper">
+      { post &&
+        <div className="post-wrapper">
           <header className="title">
             <div className="actions-wrap">
               <Button onClick={()=>Router.push("/posts")}>Back</Button>
 
-              {currentUser && (
-                <div className="actions">
-                  <Link href="/posts/[id]/edit" as={`/posts/${post.id}/edit`}><a>
-                    <Button>Edit</Button>
-                  </a></Link>
-                  <Button onClick={onDeletePost}>Delete</Button>
-                </div>
-              )}
+              <div className="actions">
+                <Link href="/posts/[id]/edit" as={`/posts/${post.id}/edit`}><a>
+                  <Button>Edit</Button>
+                </a></Link>
+                <Button onClick={onDeletePost}>Delete</Button>
+              </div>
             </div>
             <h1>{post.title}</h1>
           </header>
           <article className="content" dangerouslySetInnerHTML={{ __html: marked(post.content) }} />
+          <div className="update">{dateFormat(post.updatedAt.toString())}</div>
         </div>
       }
 
       <style jsx>{`
-        .wrapper{
+        .post-wrapper{
           max-width: 800px;
-          margin: 0 auto 24px;
-          padding: 0 16px;
+          margin: 0 auto;
+          padding: 12px 16px 24px;
         }
         .title{
           border-bottom: 1px solid #ddd;
@@ -71,9 +71,13 @@ const PostsShow: NextPage<Props> = (props) => {
         }
         .content{
           margin-top: 42px;
+          word-break: break-all;
+          min-height: 300px;
+        }
+        .update{
+          text-align: end;
         }
         .actions-wrap{
-          margin-top: 6px;
           display: flex;
           justify-content: space-between;
         }
@@ -99,7 +103,7 @@ export const getServerSideProps: GetServerSideProps<any, { id: string }> = withS
   const id = context.params.id.toString()
   const connection = await getDatabaseConnection()
   const post = await connection.getRepository(Post).findOne({ where: { authorId: currentUser?.id, id } })
-  const _post = JSON.parse(JSON.stringify(post) || null)
+  const _post = JSON.parse(JSON.stringify(post || null))
 
   return {
     props: {

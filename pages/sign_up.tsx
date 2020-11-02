@@ -39,10 +39,26 @@ const SignUp: NextPage = () => {
 
   return (
     <>
-      <h1>注册</h1>
-      <div style={{maxWidth: 280}}>
+      <div className="sign-up">
+        <h1>M</h1>
         { form }
       </div>
+
+      <style jsx>{`
+        .sign-up{
+          max-width: 280px;
+          margin: 0 auto;
+        }
+        h1{
+          font-size: 120px;
+          text-align: center;
+          margin-bottom: 32px;
+          font-family: Cardo,serif;
+        }
+        @media (max-width: 320px){
+          h1{ font-size: 80px;}
+        }
+      `}</style>
     </>
   )
 }

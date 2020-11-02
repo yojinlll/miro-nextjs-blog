@@ -1,4 +1,17 @@
+.pager{
+  font-size: 12px;
+  padding-bottom: 24px;
+}
+.pager-link-list{
+  margin: 0 6px;
+}
 .pager-item{
   margin: 0 6px;
-  color: rgb(134, 134, 255);
+}
+.pager-active{
+  font-size: 14px;
+  color: #c39c5a;
+}
+.unactive{
+  color: #0000003d;
 }

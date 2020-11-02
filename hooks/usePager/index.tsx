@@ -32,26 +32,28 @@ export const usePager = (options: UsePagerOptions) => {
     ), [])
 
   const pager = totalPage > 1 && (
-    <div>
+    <div className={sc['pager']}>
       {
-        page > 1 && <Link href={_hrefMaker(page - 1)}><a>上一页</a></Link>
+        page > 1 ? <Link href={_hrefMaker(page - 1)}><a>上一页</a></Link> : <span className={sc['unactive']}>上一页</span>
       }
 
-      {
-        y.map((i, idx) => {
-          return <span key={idx} className={sc['pager-item']}>{
-            i > 0
-              ? <Link href={_hrefMaker(i)}><a>{i}</a></Link>
-              : '...'
-          }</span>
-        })
-      }
+      <span className={sc['pager-link-list']}>
+        {
+          y.map((i, idx) => {
+            return <span key={idx} className={sc['pager-item']}>{
+              i > 0
+                ? <Link href={_hrefMaker(i)}><a className={sc[i === page && 'pager-active']}>{i}</a></Link>
+                : '...'
+            }</span>
+          })
+        }
+      </span>
 
       {
-        page < totalPage && <Link href={_hrefMaker(page + 1)}><a>下一页</a></Link>
+        page < totalPage ? <Link href={_hrefMaker(page + 1)}><a>下一页</a></Link> : <span className={sc['unactive']}>下一页</span>
       }
 
-      <span style={{margin: '0 6px'}}>第 {page} 页</span>
+      <span style={{marginLeft: '24px'}}>第 {page} 页</span>
     </div>
   )
   return { pager }

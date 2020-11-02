@@ -39,14 +39,11 @@ const validate = async (username: string, password: string, passwordConfirmation
 
   if(username.trim() === ''){
     errors.username.push('不能为空')
-  }
-  if(username.trim().length > 12){
+  }else if(username.trim().length > 12){
     errors.username.push('太长')
-  }
-  if(username.trim().length < 3 ){
+  }else if(username.trim().length < 3 ){
     errors.username.push('太短')
-  }
-  if(!/^[a-z0-9A-Z]{0,12}$/.test(username.trim())){
+  }else if(!/^[a-z0-9A-Z]{0,12}$/.test(username.trim())){
     errors.username.push('格式不正确')
   }
 

@@ -20,3 +20,35 @@ a {
   align-items: center;
   justify-content: space-between;
 }
+.flex-init{
+  display: flex;
+}
+
+.wrapper{
+  font-family: serif;
+}
+.wrapper .cover h1{
+  font-family: Cardo,serif;
+}
+.wrapper .wrapper-header{
+  height: 22px;
+  background: url('/bg_head.jpg') left top repeat-x;
+  width: 100%;
+}
+
+.wrapper .miro-button{
+  border: 1px solid #c39c5a;
+  font-family: Cardo,serif;
+}
+.wrapper .miro-button:hover,
+.wrapper .miro-button:focus{
+  border-color: #c39c5a;
+  outline: 0;
+  box-shadow: 0 0 6px 2px #c39c5a42;
+}
+.wrapper .miro-input:hover,
+.wrapper .miro-input:focus{
+  border-color: #c39c5a;
+  outline: 0;
+  box-shadow: 0 0 6px 2px #c39c5a42;
+}

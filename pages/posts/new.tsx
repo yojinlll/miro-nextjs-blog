@@ -11,7 +11,7 @@ const PostsNew: NextPage = (props) => {
       { name: "title", label: "title", input: {type: 'text'} },
       { name: "content", label: "content", input: {type: 'textarea'}},
     ],
-    buttons: <Button type="submit" style={{marginRight: 20}}>提交</Button>,
+    buttons: <Button type="submit" style={{marginRight: 20}}>Commit</Button>,
     submit: (formData) => {
       if(formData.title.trim() && formData.content){
         axios.post('/api/v1/posts', formData)
@@ -36,8 +36,10 @@ const PostsNew: NextPage = (props) => {
 
   return (
     <>
-      <div className="wrapper">
-        <h1>New</h1>
+      <div className="new-wrapper">
+        <header>
+          <Button onClick={()=>Router.push("/posts")}>Back</Button>
+        </header>
 
         <div className="post-new">
           { form }
@@ -45,10 +47,14 @@ const PostsNew: NextPage = (props) => {
       </div>
 
       <style jsx>{`
-        .wrapper {
+        .new-wrapper {
           width: 90vw;
           max-width: 800px;
           margin: 0 auto;
+        }
+        .new-wrapper header{
+          margin-top: 12px;
+          margin-bottom: 24px;
         }
       `}</style>
       <style jsx global>{`
@@ -71,11 +77,11 @@ const PostsNew: NextPage = (props) => {
           transition: border-color .25s,box-shadow .25s;
           resize: none
         }
+        .post-new .field-textarea:hover,
         .post-new .field-textarea:focus{
-          color: #495057;
-          border-color: #b3d7ff;
+          border-color: #c39c5a;
           outline: 0;
-          box-shadow: 0 0 0 2px #007bff40;
+          box-shadow: 0 0 6px 2px #c39c5a42;
         }
         .post-new .miro-button{
           display: block;

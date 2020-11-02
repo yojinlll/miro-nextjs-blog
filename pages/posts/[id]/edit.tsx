@@ -44,7 +44,7 @@ const PostEdit: NextPage<Props> = (props) => {
 
   return (
     <>
-      <div className="wrapper">
+      <div className="edit-wrapper">
         <header className="edit-header">
           <Button onClick={()=>{ window.history.go(-1) }}>Back</Button>
         </header>
@@ -55,13 +55,14 @@ const PostEdit: NextPage<Props> = (props) => {
       </div>
 
       <style jsx>{`
-        .wrapper {
+        .edit-wrapper {
           width: 90vw;
           max-width: 800px;
           margin: 0 auto;
+          padding-bottom: 12px;
         }
         .edit-header{
-          margin: 12px 0 24px;
+          padding: 12px 0 24px;
         }
       `}</style>
       <style jsx global>{`
@@ -76,19 +77,21 @@ const PostEdit: NextPage<Props> = (props) => {
         }
         .post-edit .field-textarea{
           border: 1px solid #ced4da;
-          padding: .375rem .75rem;
+          padding: .75rem .75rem;
           border-radius: .25rem;
           width: 90vw;
           max-width: 800px;
           min-height: 60vh;
           transition: border-color .25s,box-shadow .25s;
-          resize: none
+          resize: none;
+          background: none;
         }
+
+        .post-edit .field-textarea:hover,
         .post-edit .field-textarea:focus{
-          color: #495057;
-          border-color: #b3d7ff;
+          border-color: #c39c5a;
           outline: 0;
-          box-shadow: 0 0 0 2px #007bff40;
+          box-shadow: 0 0 6px 2px #c39c5a42;
         }
         .post-edit .miro-button{
           display: block;
