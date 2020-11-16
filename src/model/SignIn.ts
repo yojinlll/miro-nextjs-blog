@@ -21,7 +21,7 @@ export class SignIn {
     this.user = await connection.manager.findOne(User, { where: { username: this.username } })
 
     if (this.username.trim() === '') {
-      this.errors.username.push('不许为空')
+      this.errors.username.push('不能为空')
     }else{
       if (this.user) {
         this.user.passwordDigest !== md5(this.password) && this.errors.password.push('密码不匹配')

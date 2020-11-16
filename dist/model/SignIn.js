@@ -62,7 +62,7 @@ var SignIn = /*#__PURE__*/function () {
                 this.user = _context.sent;
 
                 if (this.username.trim() === '') {
-                  this.errors.username.push('不许为空');
+                  this.errors.username.push('不能为空');
                 } else {
                   if (this.user) {
                     this.user.passwordDigest !== (0, _md["default"])(this.password) && this.errors.password.push('密码不匹配');

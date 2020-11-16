@@ -8,6 +8,7 @@ import qs from "querystring"
 import Link from "next/link";
 import { useEffect } from "react";
 import Router from "next/router"
+import Swal from "sweetalert2";
 
 const SignIn: NextPage<{user: User}> = (props) => {
   const {form, setFormData, setErrors} = useForm({
@@ -24,19 +25,28 @@ const SignIn: NextPage<{user: User}> = (props) => {
       <Link href={`/sign_up`}><a><Button type="button">前往注册</Button></a></Link>
     </>),
     submit: (formData) => {
-      axios.post('/api/v1/sessions', formData)
-      .then(res => {
-        setErrors({ username: [], password: [] })
-
-        const query = qs.parse(window.location.search.substr(1))
-        query.returnTo ? Router.push(query.returnTo.toString()) : Router.push('/')
-      })
-      .catch(err => {
-        const error = err as AxiosError
-        if (error.response) {
-          setErrors(error.response.data)
-        }
-      })
+      if(Object.keys(formData).every(key => !!formData[key])){
+        axios.post('/api/v1/sessions', formData)
+        .then(res => {
+          setErrors({ username: [], password: [] })
+  
+          const query = qs.parse(window.location.search.substr(1))
+          query.returnTo ? Router.push(query.returnTo.toString()) : Router.push('/')
+        })
+        .catch(err => {
+          const error = err as AxiosError
+          if (error.response) {
+            setErrors(error.response.data)
+          }
+        })
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: '不能为空',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
     }
   })
 

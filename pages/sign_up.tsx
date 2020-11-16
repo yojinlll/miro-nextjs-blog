@@ -23,24 +23,33 @@ const SignUp: NextPage = () => {
       <Link href={`/sign_in`}><a><Button type="button">已有账号</Button></a></Link>
     </>),
     submit: (formData) => {
-      axios.post('/api/v1/users', formData)
-        .then(res => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Done!',
-            showConfirmButton: false,
-            timer: 1500
-          }).then(() => {
-            setErrors({ username: [], password: [], passwordConfirmation: [], })
-            window.location.href = `/sign_in?username=${formData.username}`
+      if(Object.keys(formData).every(key => !!formData[key])){
+        axios.post('/api/v1/users', formData)
+          .then(res => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Done!',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              setErrors({ username: [], password: [], passwordConfirmation: [], })
+              window.location.href = `/sign_in?username=${formData.username}`
+            })
           })
+          .catch(err => {
+            const error = err as AxiosError
+            if (error.response) {
+              setErrors(error.response.data)
+            }
+          })
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: '不能为空',
+          showConfirmButton: false,
+          timer: 1500
         })
-        .catch(err => {
-          const error = err as AxiosError
-          if (error.response) {
-            setErrors(error.response.data)
-          }
-        })
+      }
     }
   })
 
