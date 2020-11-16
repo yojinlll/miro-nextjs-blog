@@ -64,7 +64,9 @@ const validate = async (username: string, password: string, passwordConfirmation
     errors.password.push('不能为空')
   }
 
-  if(password !== passwordConfirmation){
+  if(passwordConfirmation === ''){
+    errors.passwordConfirmation.push('不能为空')
+  }else if(password !== passwordConfirmation){
     errors.passwordConfirmation.push('密码不匹配')
   }
 

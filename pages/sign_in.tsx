@@ -25,18 +25,18 @@ const SignIn: NextPage<{user: User}> = (props) => {
     </>),
     submit: (formData) => {
       axios.post('/api/v1/sessions', formData)
-        .then(res => {
-          setErrors({ username: [], password: [] })
+      .then(res => {
+        setErrors({ username: [], password: [] })
 
-          const query = qs.parse(window.location.search.substr(1))
-          query.returnTo ? Router.push(query.returnTo.toString()) : Router.push('/')
-        })
-        .catch(err => {
-          const error = err as AxiosError
-          if (error.response) {
-            setErrors(error.response.data)
-          }
-        })
+        const query = qs.parse(window.location.search.substr(1))
+        query.returnTo ? Router.push(query.returnTo.toString()) : Router.push('/')
+      })
+      .catch(err => {
+        const error = err as AxiosError
+        if (error.response) {
+          setErrors(error.response.data)
+        }
+      })
     }
   })
 
