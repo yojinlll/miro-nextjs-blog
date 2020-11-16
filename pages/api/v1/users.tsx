@@ -1,6 +1,7 @@
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
 import { NextApiHandler } from 'next'
 import { User } from 'src/entity/User';
+import { Post } from 'src/entity/Post';
 import { getConnection } from 'typeorm';
 
 const Users: NextApiHandler = async (req, res) => {
@@ -9,6 +10,8 @@ const Users: NextApiHandler = async (req, res) => {
   const user = new User()
   user.username = username.trim()
   user.password = password
+  user.createdAt = new Date();
+  user.updatedAt = new Date();
   const [hasErrors, errors] = await validate(user.username, password, passwordConfirmation)
   
   res.setHeader("Content-type", "application/json; charset=utf-8")
@@ -17,7 +20,17 @@ const Users: NextApiHandler = async (req, res) => {
     res.write(JSON.stringify(errors))
   }else{
     const connection = getConnection()
-    await connection.manager.save(user)
+    const _user = await connection.manager.save(user)
+
+    const post = new Post();
+    post.title = 'README';
+    post.content = '# [Mironote 支持 Markdown 语法](https://github.com/guodongxiaren/README/blob/master/README.md)。';
+    post.authorId = _user.id;
+    post.author = _user;
+    post.createdAt = new Date();
+    post.updatedAt = new Date();
+    await connection.manager.save(post);
+
     res.statusCode = 200
     res.write(user.toJSON())
   }

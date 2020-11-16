@@ -54,5 +54,7 @@ export function useForm(options: UseFormOptions) {
 
   return {
     form,
-    setErrors }
+    setFormData,
+    setErrors
+  }
 }

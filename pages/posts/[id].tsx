@@ -11,6 +11,7 @@ import axios from "axios";
 import Router from "next/router"
 import { useRedirect } from "hooks/useRedirect"
 import { dateFormat } from "lib/utils"
+import Swal from 'sweetalert2'
 
 type Props = {
   id: number
@@ -23,11 +24,22 @@ const PostsShow: NextPage<Props> = (props) => {
   const onDeletePost = useCallback(() => {
     axios.delete(`/api/v1/posts/${id}`)
       .then(() => {
-        alert('done!')
-        Router.push("/posts")
+        Swal.fire({
+          icon: 'success',
+          title: 'Done!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          Router.push("/posts")
+        })
       })
       .catch(() => {
-        alert('error!')
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          showConfirmButton: false,
+          timer: 1500
+        })
       })
   }, [id])
 
@@ -67,6 +79,7 @@ const PostsShow: NextPage<Props> = (props) => {
         }
         .title > h1{ 
           margin-bottom: 0;
+          margin-top: 42px;
           word-break: break-all;
         }
         .content{

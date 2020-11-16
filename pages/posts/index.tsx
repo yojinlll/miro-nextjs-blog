@@ -37,6 +37,14 @@ const PostsIndex: NextPage<Props> = (props) => {
     }).catch(err => {})
   }
 
+  const postsSort = () => {
+    if(props.posts.length > 1){
+      window.location.search.includes('DESC')
+        ? window.location.href = "/posts"
+        : window.location.href = "/posts?order=DESC"
+    }
+  }
+
   useRedirect(currentUser)
 
   return (
@@ -60,11 +68,7 @@ const PostsIndex: NextPage<Props> = (props) => {
           <Link href="/posts/new"><a>
             <Button>Add</Button>
           </a></Link>
-          <Button style={{ marginLeft: 6 }} onClick={() => {
-            window.location.search.includes('DESC')
-              ? window.location.href = "/posts"
-              : window.location.href = "/posts?order=DESC"
-          }}>Sort</Button>
+          <Button style={{ marginLeft: 6 }} onClick={postsSort}>Sort</Button>
         </div>
       </header>
 
@@ -115,6 +119,7 @@ const PostsIndex: NextPage<Props> = (props) => {
           border-bottom: 1px solid #ddd;
           padding: 8px 0;
           justify-content: space-between;
+          margin-bottom: 6px;
         }
         .post-item .title{
           font-size: 14px;
@@ -131,6 +136,7 @@ const PostsIndex: NextPage<Props> = (props) => {
           color: #c39c5a; cursor: pointer;
         }
         .posts-list{
+          margin-top: 24px;
           min-height: 65vh;
         }
         .menu{

@@ -6,9 +6,11 @@ import { Button } from "components"
 import { useForm } from "hooks/useForm";
 import qs from "querystring"
 import Link from "next/link";
+import { useEffect } from "react";
+import Router from "next/router"
 
 const SignIn: NextPage<{user: User}> = (props) => {
-  const {form, setErrors} = useForm({
+  const {form, setFormData, setErrors} = useForm({
     initFormData: {
       username: '',
       password: '',
@@ -25,14 +27,9 @@ const SignIn: NextPage<{user: User}> = (props) => {
       axios.post('/api/v1/sessions', formData)
         .then(res => {
           setErrors({ username: [], password: [] })
-          // alert('登录成功！')
 
-          if(window.location.search){
-            const query = qs.parse(window.location.search.substr(1))
-            window.location.href = query.returnTo.toString()
-          }else{
-            window.location.href = '/'
-          }
+          const query = qs.parse(window.location.search.substr(1))
+          query.returnTo ? Router.push(query.returnTo.toString()) : Router.push('/')
         })
         .catch(err => {
           const error = err as AxiosError
@@ -42,6 +39,14 @@ const SignIn: NextPage<{user: User}> = (props) => {
         })
     }
   })
+
+  useEffect(()=>{
+    const query = qs.parse(window.location.search.substr(1))
+    query.username && setFormData({
+      username: query.username?.toString(),
+      password: '',
+    })
+  }, [])
 
   return (
     <>

@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "components"
 import { useForm } from "hooks/useForm";
 import Link from "next/link";
+import Swal from 'sweetalert2'
 
 const SignUp: NextPage = () => {
   const {form, setErrors} = useForm({
@@ -24,9 +25,15 @@ const SignUp: NextPage = () => {
     submit: (formData) => {
       axios.post('/api/v1/users', formData)
         .then(res => {
-          alert('注册成功！')
-          setErrors({ username: [], password: [], passwordConfirmation: [], })
-          window.location.pathname = '/sign_in'
+          Swal.fire({
+            icon: 'success',
+            title: 'Done!',
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            setErrors({ username: [], password: [], passwordConfirmation: [], })
+            window.location.href = `/sign_in?username=${formData.username}`
+          })
         })
         .catch(err => {
           const error = err as AxiosError

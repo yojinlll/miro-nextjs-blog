@@ -7,6 +7,7 @@ import { Post } from "src/entity/Post";
 import { withSession } from "lib/withSession";
 import { User } from "src/entity/User";
 import { useRedirect } from "hooks/useRedirect";
+import Swal from 'sweetalert2'
 
 type Props = {
   currentUser: User | null
@@ -25,17 +26,33 @@ const PostEdit: NextPage<Props> = (props) => {
     ],
     buttons: <Button type="submit" style={{ marginRight: 20 }}>提交</Button>,
     submit: (formData) => {
-      if (formData.title.trim() && formData.content) {
+      if (formData.title.trim()) {
         axios.patch(`/api/v1/posts/${id}`, formData)
           .then(res => {
-            alert('done!')
-            window.history.go(-1)
+            Swal.fire({
+              icon: 'success',
+              title: 'Done!',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.history.go(-1)
+            })
           })
           .catch(err => {
-            alert('error!')
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              showConfirmButton: false,
+              timer: 1500
+            })
           })
       } else {
-        alert('请输入标题和内容')
+        Swal.fire({
+          icon: 'error',
+          title: '标题不可为空',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
     }
   })
@@ -77,7 +94,7 @@ const PostEdit: NextPage<Props> = (props) => {
         }
         .post-edit .field-textarea{
           border: 1px solid #ced4da;
-          padding: .75rem .75rem;
+          padding: 1.25rem .75rem;
           border-radius: .25rem;
           width: 90vw;
           max-width: 800px;

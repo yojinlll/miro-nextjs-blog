@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { Button } from "components"
 import { useForm } from "hooks/useForm";
 import Router from "next/router"
+import Swal from 'sweetalert2'
 
 const PostsNew: NextPage = (props) => {
   const {form, setErrors} = useForm({
@@ -13,23 +14,40 @@ const PostsNew: NextPage = (props) => {
     ],
     buttons: <Button type="submit" style={{marginRight: 20}}>Commit</Button>,
     submit: (formData) => {
-      if(formData.title.trim() && formData.content){
+      if(formData.title.trim()){
         axios.post('/api/v1/posts', formData)
           .then(res => {
-            alert('done！')
-            Router.push("/posts")
+            Swal.fire({
+              icon: 'success',
+              title: 'Done!',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              Router.push("/posts")
+            })
           })
           .catch(err => {
             const error = err as AxiosError
             if (error.response) {
               if(error.response.status === 401){
-                alert('未登录')
-                window.location.href = `/sign_in?returnTo=${window.location.pathname}`
+                Swal.fire({
+                  icon: 'error',
+                  title: '未登录',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => {
+                  Router.push(`/sign_in?returnTo=${window.location.pathname}`)
+                })
               }
             }
           })
       }else{
-        alert('请输入标题和内容')
+        Swal.fire({
+          icon: 'error',
+          title: '标题不可为空',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
     }
   })
@@ -51,6 +69,7 @@ const PostsNew: NextPage = (props) => {
           width: 90vw;
           max-width: 800px;
           margin: 0 auto;
+          padding-bottom: 24px;
         }
         .new-wrapper header{
           margin-top: 12px;
